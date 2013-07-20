@@ -1,0 +1,27 @@
+{
+  "name": "topic-stream",
+  "version": "0.1.0",
+  "description": "The topic-stream is a simple stream which enables writing messages over either AMQP or MQTT to a topic.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wolfeidau/topic-stream/"
+  },
+  "keywords": [
+    "MQTT",
+    "AMQP",
+    "Streams"
+  ],
+  "author": "Mark Wolfe <mark@wolfe.id.au>",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "~1.7.2",
+    "mocha": "~1.12.0"
+  }
+}
