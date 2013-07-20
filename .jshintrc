@@ -5,6 +5,7 @@
   "curly": false,
   "asi": true,
   "laxbreak": true,
+  "expr": true,
   "predef": [
     "describe",
     "it",
