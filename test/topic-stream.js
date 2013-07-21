@@ -28,7 +28,7 @@ describe('TopicStream', function () {
   it('should create a new topic stream', function (done) {
 
     var connection =
-      amqp.createConnection({url: "amqp://guest:guest@localhost:5672"});
+      amqp.createConnection({url: "amqp://guest:guest@localhost:5672"})
 
     connection.on('ready', function () {
       log('Connection', 'open')
