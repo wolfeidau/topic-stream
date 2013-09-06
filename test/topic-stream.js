@@ -12,14 +12,14 @@ var expect = chai.expect;
 describe('TopicStream', function () {
 
   function createQueue(connection, onData, cb) {
-    connection.exchange('/test/events', {}, function (ex) {
-      log('Exchange', ex.name, 'open')
-      connection.queue('/queue/events', function (queue) {
-        log('Queue', queue.name, 'open')
-        queue.bind(ex, '#')
+    connection.exchange('/test/events1234', {}, function (ex) {
+      log('Exchange', ex.name, 'open');
+      connection.queue('/queue/events1234', function (queue) {
+        log('Queue', queue.name, 'open');
+        queue.bind(ex, '#');
         // Receive messages
-        queue.subscribe(onData)
-        log('queue', 'cb')
+        queue.subscribe(onData);
+        log('queue', 'cb');
         cb(queue)
       })
     })
@@ -28,19 +28,19 @@ describe('TopicStream', function () {
   it('should create a new topic stream', function (done) {
 
     var connection =
-      amqp.createConnection({url: "amqp://guest:guest@localhost:5672"})
+      amqp.createConnection({url: "amqp://guest:guest@localhost:5672"});
 
     connection.on('ready', function () {
-      log('Connection', 'open')
+      log('Connection', 'open');
 
-      topicStream({connection: connection, exchangeName: '/test/events', routingKey: '#'}, function (err, stream) {
-        expect(err).to.not.exist
-        expect(stream).to.exist
-        stream.end()
+      topicStream({connection: connection, exchangeName: '/test/events123', routingKey: '#'}, function (err, stream) {
+        expect(err).to.not.exist;
+        expect(stream).to.exist;
+        stream.end();
         done()
-      })
+      });
 
-    })
+    });
   });
 
   it('should send data', function (done) {
@@ -58,13 +58,13 @@ describe('TopicStream', function () {
         done()
 
       }, function () {
-        topicStream({connection: connection, exchangeName: '/test/events', routingKey: '#'}, function (err, stream) {
+        topicStream({connection: connection, exchangeName: '/test/events1234', routingKey: '#'}, function (err, stream) {
           stream.write({text: 'something'});
           stream.end();
         })
-      })
+      });
 
-    })
+    });
 
   });
 
