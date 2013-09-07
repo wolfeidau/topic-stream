@@ -33,7 +33,7 @@ describe('TopicStream', function () {
     connection.on('ready', function () {
       log('Connection', 'open');
 
-      topicStream({connection: connection, exchangeName: '/test/events123', routingKey: '#'}, function (err, stream) {
+      topicStream({connection: connection, exchangeName: '/test/events123'}, function (err, stream) {
         expect(err).to.not.exist;
         expect(stream).to.exist;
         stream.end();
@@ -58,7 +58,7 @@ describe('TopicStream', function () {
         done()
 
       }, function () {
-        topicStream({connection: connection, exchangeName: '/test/events1234', routingKey: '#'}, function (err, stream) {
+        topicStream({connection: connection, exchangeName: '/test/events1234'}, function (err, stream) {
           stream.write({text: 'something'});
           stream.end();
         })

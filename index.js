@@ -1,1 +1,1 @@
-module.exports = require('./lib/topic-stream.js')
+module.exports = require('./lib/topic-stream.js');

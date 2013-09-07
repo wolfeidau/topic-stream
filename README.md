@@ -1,8 +1,6 @@
-# topic-stream
+# topic-stream [![Build Status](https://drone.io/github.com/wolfeidau/topic-stream/status.png)](https://drone.io/github.com/wolfeidau/topic-stream/latest)
 
-[![Build Status](https://travis-ci.org/wolfeidau/topic-stream.png?branch=master)](https://travis-ci.org/wolfeidau/topic-stream)
-
-The topic-stream is a simple stream which enables writing messages over AMQP to a topic. It is designed to be used with other steams to enable compression, encoding or encryption of data which is finally sent to a topic.
+The topic-stream is a writable stream which translates objects written to into JSON messages which it sends over an AMQP topic.
 
 # Example
 
@@ -22,7 +20,7 @@ var connection =
 connection.on('ready', function () {
   log('Connection', 'open')
 
-  topicStream({connection: connection, exchangeName: '/events/input', routingKey: '#'}, function (err, ts) {
+  topicStream({connection: connection, exchangeName: '/events/input'}, function (err, ts) {
     log('topicStream', 'open')
     es.pipeline(process.openStdin(), es.split(), ts)
   })
