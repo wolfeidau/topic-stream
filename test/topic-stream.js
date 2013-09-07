@@ -14,7 +14,7 @@ describe('TopicStream', function () {
   function createQueue(connection, onData, cb) {
     connection.exchange('/test/events1234', {}, function (ex) {
       log('Exchange', ex.name, 'open');
-      connection.queue('/queue/events1234', function (queue) {
+      connection.queue('/queue/sometest', function (queue) {
         log('Queue', queue.name, 'open');
         queue.bind(ex, '#');
         // Receive messages
