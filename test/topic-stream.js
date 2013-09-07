@@ -52,10 +52,10 @@ describe('TopicStream', function () {
       log('Connection', 'open');
 
       createQueue(connection, function onData(message) {
-        log('message', message)
-        expect(message).to.have.property('text')
-        expect(message.text).to.equal('something')
-        done()
+        log('message', message);
+        expect(message).to.have.property('text');
+        expect(message.text).to.equal('something');
+        done();
 
       }, function () {
         topicStream({connection: connection, exchangeName: '/test/events1234'}, function (err, stream) {

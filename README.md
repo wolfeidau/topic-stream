@@ -9,29 +9,31 @@ This is a simple example using [event-stream](https://github.com/dominictarr/eve
 ```javascript
 "use strict";
 
-var es = require('event-stream')
-var amqp = require('amqp')
-var topicStream = require('../lib/topic-stream.js')
-var log = require('debug')('read-stdin-topic-stream')
+var es = require('event-stream');
+var amqp = require('amqp');
+var topicStream = require('../index.js');
+var log = require('debug')('read-stdin-topic-stream');
+
+// exit once we have processed the data that was piped in.
+process.stdin.on('close', process.exit);
 
 var connection =
-  amqp.createConnection({url: "amqp://guest:guest@localhost:5672"})
+  amqp.createConnection({url: "amqp://guest:guest@localhost:5672"});
 
 connection.on('ready', function () {
-  log('Connection', 'open')
+  log('Connection', 'open');
 
-  topicStream({connection: connection, exchangeName: '/events/input'}, function (err, ts) {
-    log('topicStream', 'open')
-    es.pipeline(process.openStdin(), es.split(), ts)
-  })
-})
+  topicStream({connection: connection, exchangeName: '/events/syslog'}, function (err, ts) {
+    log('topicStream', 'open');
+    es.pipeline(process.stdin, es.split(), ts);
+  });
+});
 ```
 
 Anything sent to stdin on the process will be split into lines and packaged into AMQP messages.
 
 # TODO
 
-* Add support for MQTT.
 * Add the option to just pass an AMQP URL.
 
 ## License
