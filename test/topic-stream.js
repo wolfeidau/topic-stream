@@ -14,9 +14,9 @@ describe('TopicStream', function () {
   function createQueue(connection, onData, cb) {
     connection.exchange('/test/events1234', {}, function (ex) {
       log('Exchange', ex.name, 'open');
-      connection.queue('/queue/sometest', function (queue) {
+      connection.queue('/queue/sometest', {"x-message-ttl": 30000, "durable": true}, function (queue) {
         log('Queue', queue.name, 'open');
-        queue.bind(ex, '#');
+        queue.bind(ex, 'test');
         // Receive messages
         queue.subscribe(onData);
         log('queue', 'cb');
@@ -51,15 +51,18 @@ describe('TopicStream', function () {
     connection.on('ready', function () {
       log('Connection', 'open');
 
-      createQueue(connection, function onData(message) {
+      createQueue(connection, function onData(message, headers, deliveryInfo) {
         log('message', message);
+        log('deliveryInfo', deliveryInfo.routingKey);
         expect(message).to.have.property('text');
         expect(message.text).to.equal('something');
         done();
 
       }, function () {
         topicStream({connection: connection, exchangeName: '/test/events1234'}, function (err, stream) {
-          stream.write({text: 'something'});
+          stream.write({text: 'something', _routingKey:'test'});
+          // this write should never hit the subscribed queue as it doesn't match the routing key.
+          stream.write({text: 'something', _routingKey:'ddd'});
           stream.end();
         })
       });
