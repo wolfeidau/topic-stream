@@ -21,7 +21,7 @@ var connection =
 connection.on('ready', function () {
   log('Connection', 'open');
 
-  topicStream({connection: connection, exchangeName: '/events/syslog'}, function (err, ts) {
+  topicStream({connection: connection, exchangeName: 'events/syslog'}, function (err, ts) {
     log('topicStream', 'open');
     es.pipeline(process.stdin, es.split(), ts);
   });
