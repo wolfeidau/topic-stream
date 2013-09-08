@@ -2,6 +2,9 @@
 
 The topic-stream is a writable stream which translates objects written to into JSON messages which it sends over an AMQP topic.
 
+[![NPM](https://nodei.co/npm/topic-stream.png)](https://nodei.co/npm/topic-stream/)
+[![NPM](https://nodei.co/npm-dl/topic-stream.png)](https://nodei.co/npm/topic-stream/)
+
 # Example
 
 This is a simple example using [event-stream](https://github.com/dominictarr/event-stream) to pipeline data entered via stdin, split it into lines and send it via topic stream to `/events/input` over AMQP.
