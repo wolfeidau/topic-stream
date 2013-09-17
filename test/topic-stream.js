@@ -9,10 +9,12 @@ var topicStream = require('../lib/topic-stream.js');
 
 var expect = chai.expect;
 
+var opts = {type: 'topic', durable: true};
+
 describe('TopicStream', function () {
 
   function createQueue(connection, onData, cb) {
-    connection.exchange('/test/events1234', {}, function (ex) {
+    connection.exchange('/test/events1234', opts, function (ex) {
       log('Exchange', ex.name, 'open');
       connection.queue('/queue/sometest', {"x-message-ttl": 30000, "durable": true}, function (queue) {
         log('Queue', queue.name, 'open');
