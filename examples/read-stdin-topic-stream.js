@@ -8,21 +8,18 @@
  */
 
 var es = require('event-stream');
-var amqp = require('amqp');
+var amqplib = require('amqplib');
 var topicStream = require('../index.js');
 var log = require('debug')('read-stdin-topic-stream');
 
 // exit once we have processed the data that was piped in.
 process.stdin.on('close', process.exit);
 
-var connection =
-  amqp.createConnection({url: "amqp://guest:guest@localhost:5672"});
+log('Connection', 'open');
 
-connection.on('ready', function () {
-  log('Connection', 'open');
+var open = amqplib.connect();
 
-  topicStream({connection: connection, exchangeName: 'events/syslog'}, function (err, ts) {
-    log('topicStream', 'open');
-    es.pipeline(process.stdin, es.split(), ts);
-  });
+topicStream(open, {exchangeName: 'events/syslog'}, function (err, ts) {
+  log('topicStream', 'open');
+  es.pipeline(process.stdin, es.split(), ts);
 });
