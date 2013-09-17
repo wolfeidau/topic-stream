@@ -4,6 +4,7 @@ var chai = require('chai');
 
 var log = require('debug')('test:topic-stream');
 var amqp = require('amqp');
+var amqplib = require('amqplib');
 
 var topicStream = require('../lib/topic-stream.js');
 
@@ -29,19 +30,13 @@ describe('TopicStream', function () {
 
   it('should create a new topic stream', function (done) {
 
-    var connection =
-      amqp.createConnection({url: "amqp://guest:guest@localhost:5672"});
+    var open = amqplib.connect();
 
-    connection.on('ready', function () {
-      log('Connection', 'open');
-
-      topicStream({connection: connection, exchangeName: '/test/events123'}, function (err, stream) {
-        expect(err).to.not.exist;
-        expect(stream).to.exist;
-        stream.end();
-        done()
-      });
-
+    topicStream(open, {exchangeName: '/test/events123'}, function (err, stream) {
+      expect(err).to.not.exist;
+      expect(stream).to.exist;
+      stream.end();
+      done()
     });
   });
 
@@ -61,10 +56,13 @@ describe('TopicStream', function () {
         done();
 
       }, function () {
-        topicStream({connection: connection, exchangeName: '/test/events1234'}, function (err, stream) {
-          stream.write({text: 'something', _routingKey:'test'});
+
+        var open = amqplib.connect();
+
+        topicStream(open, {exchangeName: '/test/events1234'}, function (err, stream) {
+          stream.write({text: 'something', _routingKey: 'test'});
           // this write should never hit the subscribed queue as it doesn't match the routing key.
-          stream.write({text: 'something', _routingKey:'ddd'});
+          stream.write({text: 'something', _routingKey: 'ddd'});
           stream.end();
         })
       });
