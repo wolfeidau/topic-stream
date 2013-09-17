@@ -1,6 +1,6 @@
 {
   "name": "topic-stream",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The topic-stream is a simple stream which enables writing messages over either AMQP or MQTT to a topic.",
   "main": "index.js",
   "directories": {
